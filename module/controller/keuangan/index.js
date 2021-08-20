@@ -17,12 +17,12 @@ const trendPendapatan = async (req, res, next) => {
         GROUP BY
             MONTH(k.date)
         ORDER BY
-            total DESC
+            bulan ASC 
             `)
 
         res.json({
             "success": true,
-            "data": rows
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -47,6 +47,7 @@ const pendapatan = async (req, res, next) => {
                 payment_type_id
             ORDER BY
                 total DESC
+            
             `)
 
         const [targetTahun] = await db.query(`
@@ -99,7 +100,7 @@ const pendapatanPerUnit = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -130,7 +131,7 @@ const pendapatanPerJenis = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -143,7 +144,7 @@ const pendapatanCaraBayar = async (req, res, next) => {
     try {
         const [rows] = await db.query(`
         SELECT
-            *,
+            name1 as name,
             SUM(total1 + COALESCE(total2,0)) as final
         FROM (
             SELECT
@@ -180,10 +181,11 @@ const pendapatanCaraBayar = async (req, res, next) => {
                 rpt.name ) as vi ON
             v.name1 = vi.name2
 	    GROUP BY v.name1
+	    ORDER BY final desc
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)

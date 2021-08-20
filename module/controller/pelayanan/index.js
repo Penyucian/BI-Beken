@@ -51,14 +51,17 @@ const kunjungan = async (req, res, next) => {
             AND v.continue_id not in(10)
         `)
 
+        function kunjunganTotal(total) {
+            return total[0].jml
+        }
+
         function kunjunganAVG(total) {
-            console.log(Math.ceil(total[0].jml/30));
             return Math.ceil(total[0].jml/30)
         }
 
         res.json({
             "success": true,
-            "kunjungan": kunjungan,
+            "kunjungan": kunjunganTotal(kunjungan),
             "kunjunganAVG": kunjunganAVG(kunjungan),
         })
     } catch (error) {
@@ -261,7 +264,7 @@ const sepuluhBesarRajal = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -287,7 +290,7 @@ const sepuluhBesarRanap = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -310,7 +313,7 @@ const kunjunganRJ = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -332,7 +335,7 @@ const kunjunganRI = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -355,7 +358,7 @@ const kunjunganCaraBayar = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -378,7 +381,7 @@ const kunjunganKecamatan = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "result": rows
         })
     } catch (error) {
         next(error)
@@ -403,11 +406,12 @@ const penggunaanObatTertinggi = async (req, res, next) => {
             AND DATE(pr.date) BETWEEN STR_TO_DATE("01 aug 2021", '%e %b %Y') AND STR_TO_DATE("31 aug 2021",	'%e %b %Y')
         GROUP BY
             prd.drug_code
-        ORDER BY total DESC, prd.drug_name 
+        ORDER BY total DESC, prd.drug_name
+        limit 10
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "data": rows
         })
     } catch (error) {
         next(error)
@@ -438,7 +442,7 @@ const stockObat = async (req, res, next) => {
         `)
         res.json({
             "success": true,
-            "data": `${rows}`
+            "data": rows
         })
     } catch (error) {
         next(error)
@@ -486,10 +490,11 @@ const stateCovid = async (req, res, next) => {
             return z
         }
 
+            //finalCovid(entrydateCovid,exitdateCovid)
         console.log(exitdateCovid[0]);
         res.json({
             "success": true,
-            "data": finalCovid(entrydateCovid,exitdateCovid)
+            "data": entrydateCovid[0].totalAwal
         })
     } catch (error) {
         next(error)
