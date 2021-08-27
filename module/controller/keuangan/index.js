@@ -66,7 +66,7 @@ const pendapatan = async (req, res, next) => {
             "targetTahun": targetTahun
 
         })
-    } catch (error) {
+    } catch (error)    {
         next(error)
     }
 }

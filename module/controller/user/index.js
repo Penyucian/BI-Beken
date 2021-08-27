@@ -36,23 +36,32 @@ const loginUser = async (req, res, next) => {
 
             if (token) {
                 res.json({
-                    "success": true,
+                    "code": 200,
                     "data": `Prime ${token}`
                 })
             } else{
-                res.status(500)
-                const error = new Error("JWT Error, cant create token")
-                next(error)
+                res.json({
+                    "code": 500,
+                    "message": "JWT Error, cant create token"
+                })
+                /*const error = new Error("JWT Error, cant create token")
+                next(error)*/
             }
         } else {
-            res.status(403)
-            const error = new Error("Wrong Password");
-            next(error)
+            res.json({
+                "code": 403,
+                "message": "Password salah"
+            })
+            /*const error = new Error("Wrong Password");
+            next(error)*/
         }
     } else {
-        res.status(404)
-        const error = new Error("Username not registered");
-        next(error)
+        res.json({
+            "code": 404,
+            "message": "Username tidak ditemukan"
+        })
+        /*const error = new Error("Username not registered");
+        next(error)*/
     }
 }
 
