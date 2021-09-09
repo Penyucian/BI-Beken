@@ -37,7 +37,8 @@ const loginUser = async (req, res, next) => {
             if (token) {
                 res.json({
                     "code": 200,
-                    "data": `Prime ${token}`
+                    "data": `Prime ${token}`,
+                    "group": user.group_id
                 })
             } else{
                 res.json({

@@ -14,6 +14,7 @@ const {
     penggunaanObatTertinggi,
     stockObat,
     kunjunganDanPengunjung,
+    barberJohnson,
     } = require("../controller/pelayanan");
 
 // initializing Middleware
@@ -21,32 +22,36 @@ const { checkAuthorization } = require('../middleware');
 
 
 // API
-router.get('/trendMasukRumahSakit', checkAuthorization, trendMasukRumahSakit);
+router.post('/trendMasukRumahSakit', checkAuthorization, trendMasukRumahSakit);
 
-router.get('/kunjungan', checkAuthorization, kunjungan);
+router.post('/kunjungan', checkAuthorization, kunjungan);
 
-router.get('/ketersediaanBedNonCovid', checkAuthorization, ketersediaanBedNonCovid);
+router.post('/ketersediaanBedNonCovid', checkAuthorization, ketersediaanBedNonCovid);
 
-router.get('/ketersediaanBedCovid', checkAuthorization, ketersediaanBedCovid);
+router.post('/ketersediaanBedCovid', checkAuthorization, ketersediaanBedCovid);
 
-router.get('/stateCovid', checkAuthorization, stateCovid);
+router.post('/stateCovid', checkAuthorization, stateCovid);
 
-router.get('/sepuluhBesarRajal', checkAuthorization, sepuluhBesarRajal);
+router.post('/sepuluhBesarRajal', checkAuthorization, sepuluhBesarRajal);
 
-router.get('/sepuluhBesarRanap', checkAuthorization, sepuluhBesarRanap);
+router.post('/sepuluhBesarRanap', checkAuthorization, sepuluhBesarRanap);
 
-router.get('/penggunaanObatTertinggi', checkAuthorization, penggunaanObatTertinggi);
+router.post('/penggunaanObatTertinggi', checkAuthorization, penggunaanObatTertinggi);
 
-router.get('/stockObat', checkAuthorization, stockObat);
+router.post('/stockObat', checkAuthorization, stockObat);
 
-router.get('/kunjunganDanPengunjung', checkAuthorization, kunjunganDanPengunjung);
+router.post('/kunjunganDanPengunjung', checkAuthorization, kunjunganDanPengunjung);
 
-router.get('/kunjunganRJ', checkAuthorization, kunjunganRJ);
+router.post('/kunjunganRJ', checkAuthorization, kunjunganRJ);
 
-router.get('/kunjunganRI', checkAuthorization, kunjunganRI);
+router.post('/kunjunganRI', checkAuthorization, kunjunganRI);
 
-router.get('/kunjunganCaraBayar', checkAuthorization, kunjunganCaraBayar);
+router.post('/kunjunganCaraBayar', checkAuthorization, kunjunganCaraBayar);
 
-router.get('/kunjunganKecamatan', checkAuthorization, kunjunganKecamatan);
+router.post('/kunjunganKecamatan', checkAuthorization, kunjunganKecamatan);
+
+router.post('/kunjunganKecamatan', checkAuthorization, kunjunganKecamatan);
+
+router.post('/barberJohnson', checkAuthorization, barberJohnson);
 
 module.exports = router;
