@@ -4,7 +4,11 @@ const {
     pendapatan,
     pendapatanCaraBayar,
     pendapatanPerUnit,
-    pendapatanPerJenis
+    pendapatanPerJenis,
+    pendapatanPerPenunjang,
+    pendapatanPerRanap,
+    pendapatanPerCaraBayar,
+    klaimStatus
     } = require("../controller/keuangan");
 
 // initializing Middleware
@@ -12,15 +16,23 @@ const { checkAuthorization } = require('../middleware');
 
 
 // API
-router.get('/trendPendapatan', checkAuthorization, trendPendapatan);
+router.post('/trendPendapatan', checkAuthorization, trendPendapatan);
 
-router.get('/pendapatan', checkAuthorization, pendapatan);
+router.post('/pendapatan', checkAuthorization, pendapatan);
 
-router.get('/pendapatanCaraBayar', checkAuthorization, pendapatanCaraBayar);
+router.post('/pendapatanCaraBayar', checkAuthorization, pendapatanCaraBayar);
 
-router.get('/pendapatanPerUnit', checkAuthorization, pendapatanPerUnit);
+router.post('/pendapatanPerUnit', checkAuthorization, pendapatanPerUnit);
 
-router.get('/pendapatanPerJenis', checkAuthorization, pendapatanPerJenis);
+router.post('/pendapatanPerJenis', checkAuthorization, pendapatanPerJenis);
+
+router.post('/pendapatanPerPenunjang', checkAuthorization, pendapatanPerPenunjang);
+
+router.post('/pendapatanPerRanap', checkAuthorization, pendapatanPerRanap);
+
+router.post('/pendapatanPerCaraBayar', checkAuthorization, pendapatanPerCaraBayar);
+
+router.post('/klaimStatus', checkAuthorization, klaimStatus);
 
 
 module.exports = router;

@@ -1,19 +1,22 @@
 require("dotenv").config()
 const db = require("../../../tools/database");
+const now = new Date().getDate()
 
+let arrayContainData
+let where_1
+let limit
+let totalDate
 
-// TRENDMASUKRS
+/* TRENDMASUKRS */
 const trendMasukRumahSakit = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
     const separator = req.body.limit
-    let limit
-    let arrayContainData
-    let where_1
 
     const finalYearFirst = new Date(dateFirst)
     const finalYearLast = new Date(dateLast)
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
 
     try {
 
@@ -23,12 +26,12 @@ const trendMasukRumahSakit = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'BETWEEN ? AND ?'
             arrayContainData = [finalYearFirst, finalYearLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0) {
 
             where_1 = '= ?'
             arrayContainData = [finalYearLast]
@@ -79,33 +82,31 @@ const trendMasukRumahSakit = async (req, res, next) => {
     }
 }
 
+/* Kunjungan total & rata-rata */
 const kunjungan = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
-    let arrayContainData
-    let where_1
 
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
-    const timeDiff = (finalYearLast.getTime() - finalYearFirst.getTime())
-    let totalDate
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
 
     try {
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
-            totalDate = (timeDiff / (1000 * 60 * 60 * 24))
+            totalDate = timeDiff
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0) {
 
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
-            totalDate = dateLastDate
+                where_1 = 'DATE(v.date) = ?'
+                arrayContainData = [dateLast]
+                totalDate = dateLastDate
 
         } else {
 
@@ -127,7 +128,6 @@ const kunjungan = async (req, res, next) => {
             group by month(v.date)
             `, arrayContainData)
 
-
         const kunjunganTotal = kunjungan[0].jml
         const kunjunganAVG = Math.ceil(kunjunganTotal / totalDate)
 
@@ -142,26 +142,30 @@ const kunjungan = async (req, res, next) => {
     }
 }
 
+/* Kunjungan dan pengunjung */
 const kunjunganDanPengunjung = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
-    let arrayContainData
-    let where_1
 
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
     try {
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (dateLast === dateFirst) {
 
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
-
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
+            
         } else {
 
             where_1 = 'MONTH(v.date) = ?'
@@ -229,13 +233,19 @@ const kunjunganDanPengunjung = async (req, res, next) => {
     }
 }
 
+/* sepuluhBesarRajal */
 const sepuluhBesarRajal = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -245,16 +255,16 @@ const sepuluhBesarRajal = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
-
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
-
+        } else if (timeDiff === 0 ) {
+             
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
+            
         } else {
 
             where_1 = 'MONTH(v.date) = ?'
@@ -286,13 +296,19 @@ const sepuluhBesarRajal = async (req, res, next) => {
     }
 }
 
+/* sepuluhBesarRanap */
 const sepuluhBesarRanap = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -302,16 +318,16 @@ const sepuluhBesarRanap = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
-
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
-
+        } else if (timeDiff === 0 ) {
+        
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
+            
         } else {
             where_1 = 'MONTH(v.date) = ?'
             arrayContainData = [dateLastMonth]
@@ -344,13 +360,19 @@ const sepuluhBesarRanap = async (req, res, next) => {
     }
 }
 
+/* Kunjungan RJ */
 const kunjunganRJ = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -360,16 +382,16 @@ const kunjunganRJ = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0 ) {
 
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
-
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
+        
         } else {
             where_1 = 'MONTH(v.date) = ?'
             arrayContainData = [dateLastMonth]
@@ -399,13 +421,19 @@ const kunjunganRJ = async (req, res, next) => {
     }
 }
 
+/* Kunjungan RI */
 const kunjunganRI = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -415,15 +443,17 @@ const kunjunganRI = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(vic.entry_date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0 ) {
 
-            where_1 = 'MONTH(vic.entry_date) = ?'
-            arrayContainData = [dateLastMonth]
+            where_1 = 'DATE(vic.entry_date) = ?'
+            arrayContainData = [dateLast]
+            totalDate = dateLastDate
+
 
         } else {
 
@@ -456,13 +486,19 @@ const kunjunganRI = async (req, res, next) => {
     }
 }
 
+/* kunjungan Cara Bayar */
 const kunjunganCaraBayar = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -472,15 +508,16 @@ const kunjunganCaraBayar = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0 ) {
 
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
+            totalDate = dateLastDate
 
         } else {
 
@@ -513,13 +550,19 @@ const kunjunganCaraBayar = async (req, res, next) => {
     }
 }
 
+/* kunjungan Kecamatan */
 const kunjunganKecamatan = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -529,15 +572,15 @@ const kunjunganKecamatan = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0 ) {
 
-            where_1 = 'MONTH(v.date) = ?'
-            arrayContainData = [dateLastMonth]
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
 
         } else {
 
@@ -569,13 +612,20 @@ const kunjunganKecamatan = async (req, res, next) => {
     }
 }
 
+
+/* penggunaanObatTertinggi */
 const penggunaanObatTertinggi = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const separator = req.body.limit
-    let limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
 
     try {
 
@@ -585,15 +635,16 @@ const penggunaanObatTertinggi = async (req, res, next) => {
             limit = ``
         }
 
-        if (dateFirst) {
+        if (timeDiff > 0) {
 
             where_1 = 'DATE(pr.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (dateFirst === dateFirst) {
+        } else if (timeDiff === 0 ) {
 
-            where_1 = 'MONTH(pr.date) = ?'
-            arrayContainData = [dateLastMonth]
+            where_1 = 'DATE(pr.date) = ?'
+            arrayContainData = [dateLast]
+            totalDate = dateLastDate
 
         } else {
 
@@ -632,10 +683,85 @@ const penggunaanObatTertinggi = async (req, res, next) => {
     }
 }
 
+/* stock obat */
+const stockObat = async (req, res, next) => {
+
+    const dateFirst = req.body.dateFirst
+    const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
+    const dateLastMonth = dateLast.substring(5, 7)
+    const separator = req.body.limit
+
+    const finalYearFirst = (new Date(dateFirst))
+    const finalYearLast = (new Date(dateLast))
+    const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
+    
+
+    try {
+
+        if (separator !== (null || undefined)) {
+            limit = `limit ${separator}`
+        } else {
+            limit = ``
+        }
+
+        if (timeDiff > 0) {
+
+            where_1 = 'DATE(dt.date) BETWEEN ? AND ?'
+            arrayContainData = [dateFirst, dateLast]
+
+        } else if (timeDiff === 0 ) {
+
+            where_1 = 'DATE(dt.date) <= ?'
+            arrayContainData = [dateLast]
+            totalDate = dateLastDate
+
+        } else {
+
+            where_1 = 'MONTH(dt.date) <= ?'
+            arrayContainData = [dateLastMonth]
+
+        }
+
+        const [rows] = await db.query(`
+            SELECT
+                dtd.drug_code,
+                rd.name,
+                rd.formularium,
+                rdg.name as generik,
+                SUM(dtd.jumlah) as jumlah
+            FROM
+                drugs_transaction dt
+            JOIN drugs_transaction_detail dtd ON
+                (dtd.drug_transaction_id = dt.id)
+            JOIN ref_drugs rd on
+                dtd.drug_code = rd.code
+            left JOIN ref_drugs_group rdg on
+                rdg.id = rd.drug_group_id
+            WHERE ${where_1}
+            GROUP BY
+                dtd.drug_code
+            ORDER BY
+                jumlah desc
+            ${limit}
+            `,arrayContainData)
+
+            console.log(rows);
+        res.json({
+            "success": true,
+            "result": rows
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+/* stateCovid */
 const stateCovid = async (req, res, next) => {
 
-
     const dateLast = req.body.dateLast
+    const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
 
     try {
@@ -665,6 +791,7 @@ const stateCovid = async (req, res, next) => {
     }
 }
 
+/* ketersediaanBedNonCovid */
 const ketersediaanBedNonCovid = async (req, res, next) => {
     try {
         const totalBed = await db.query(`
@@ -720,6 +847,7 @@ const ketersediaanBedNonCovid = async (req, res, next) => {
     }
 }
 
+/* ketersediaanBedCovid */
 const ketersediaanBedCovid = async (req, res, next) => {
     try {
 
@@ -776,6 +904,7 @@ const ketersediaanBedCovid = async (req, res, next) => {
     }
 }
 
+/* barber Johnson */
 const barberJohnson = async (req, res, next) => {
 
     const dateFirst = req.body.dateFirst
@@ -784,63 +913,8 @@ const barberJohnson = async (req, res, next) => {
     const dateLastDate = dateLast.substring(8, 10)
     const dateLastMonth = dateLast.substring(5, 7)
     const dateLastYear = dateLast.substring(0, 4)
-    //const dateFirstDate = dateFirst.substring(8,10)
-    //const dateFirstMonth = dateFirst.substring(5,7)
-    //const dateFirstYear = dateFirst.substring(0,4)
 
     try {
-        //PASIEN AWAL BULAN
-        //PASIEN YANG MASUK KURANG DARI TGL 1 BULAN SEKARANG DAN MASIH DIRAWAT SAMPAI DENGAN TANGGAL 1 ATAU LEBIH
-        /*const [pasienAwalBulan] = await db.query(`
-            SELECT
-                COUNT(vic.id) as jml
-            FROM 
-                visits_inpatient vi
-                JOIN visits_inpatient_clinic vic ON (vic.visit_inpatient_id = vi.id)
-            WHERE 
-                DATE(vic.entry_date) < ?
-                AND 
-                    (
-                        DATE(vic.exit_date) >= ?
-                        OR vic.exit_date IS NULL
-                    )
-            `, [`
-                ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-01`
-        ])
-
-        const [pasienBulanBaru] = await db.query(`
-            SELECT
-                COUNT(vic.id) as jml
-            FROM 
-                visits_inpatient vi
-                JOIN visits_inpatient_clinic vic ON (vic.visit_inpatient_id = vi.id)
-            WHERE 
-                DATE(vic.entry_date) < ?
-                AND 
-                    (
-                        DATE(vic.exit_date) >= ?
-                        OR vic.exit_date IS NULL
-                    )
-            `, [`
-                ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
-        ])
-
-
-        const [pasienPindahan] = await db.query(`
-            SELECT 
-                COUNT(vic.id) as jml
-            FROM 
-                visits_inpatient vi
-                JOIN visits_inpatient_clinic vic ON (vic.visit_inpatient_id = vi.id AND vic.inpatient_clinic_asal_id IS NOT NULL)
-            WHERE 
-                DATE(vic.entry_date) BETWEEN ? AND ?
-            `, [`
-                ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
-        ])*/
-
         const [keluarHidupPulang] = await db.query(`
             SELECT 
                 COUNT(vic.id) as jml
@@ -901,24 +975,6 @@ const barberJohnson = async (req, res, next) => {
             `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
-        /* const [pasienAkhirBulan] = await db.query(`
-            SELECT 
-                COUNT(vic.id) as jml
-            FROM 
-                visits_inpatient vi
-                JOIN visits_inpatient_clinic vic ON (vic.visit_inpatient_id = vi.id)
-            WHERE 
-                DATE(vic.entry_date) <= ?
-                AND 
-                    (
-                        DATE(vic.exit_date) > ?
-                        OR vic.exit_date IS NULL
-                    )
-                `, [`
-                    ${dateLastYear}-${dateLastMonth}-${dateLastDate}`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
-        ]) */
-
         const [lamaDirawat] = await db.query(`
             SELECT 
                 SUM(vic.lama_dirawat) AS lama_dirawat
@@ -945,9 +1001,6 @@ const barberJohnson = async (req, res, next) => {
                 ${dateLastYear}-${dateLastMonth}-01`,
             `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
-
-
-        //const tgl_akhir = (new Date(dateLastYear, dateLastMonth, 0).getDate())
 
         let z = 0
 
@@ -1011,72 +1064,6 @@ const barberJohnson = async (req, res, next) => {
             }
         })
 
-
-    } catch (error) {
-        next(error)
-    }
-}
-
-const stockObat = async (req, res, next) => {
-
-    const dateFirst = req.body.dateFirst
-    const dateLast = req.body.dateLast
-    const dateLastMonth = dateLast.substring(5, 7)
-    const separator = req.body.limit
-    let limit
-
-    try {
-
-        if (separator !== (null || undefined)) {
-            limit = `limit ${separator}`
-        } else {
-            limit = ``
-        }
-
-        if (dateFirst) {
-
-            where_1 = 'DATE(dt.date) BETWEEN ? AND ?'
-            arrayContainData = [dateFirst, dateLast]
-
-        } else if (dateFirst === dateFirst) {
-
-            where_1 = 'MONTH(dt.date) <= ?'
-            arrayContainData = [dateLastMonth]
-
-        } else {
-
-            where_1 = 'MONTH(dt.date) <= ?'
-            arrayContainData = [dateLastMonth]
-
-        }
-
-        const [rows] = await db.query(`
-            SELECT
-                dtd.drug_code,
-                rd.name,
-                rd.formularium,
-                rdg.name ,
-                SUM(dtd.jumlah) as jumlah
-            FROM
-                drugs_transaction dt
-            JOIN drugs_transaction_detail dtd ON
-                (dtd.drug_transaction_id = dt.id)
-            JOIN ref_drugs rd on
-                dtd.drug_code = rd.code
-            left JOIN ref_drugs_group rdg on
-                rdg.id = rd.drug_group_id
-            WHERE ${where_1}
-            GROUP BY
-                dtd.drug_code
-            ORDER BY
-                jumlah desc
-            ${limit}
-            `,arrayContainData)
-
-        res.json({
-            "success": true,
-            "data": rows
-        })
 
     } catch (error) {
         next(error)

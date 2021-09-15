@@ -5,8 +5,11 @@ const JWT = require(`jsonwebtoken`)
 const JWT_KEY = process.env.JWT_KEY
 
 const getUser = async (req, res, next) => {
+
+    const username = req.body.username
+
     try {
-        const [rows] = await db.query(`select * from users where username = "bismillah"`)
+        const [rows] = await db.query(`select * from users where username = ?`, username)
         res.json({
             "success": true,
             "data": rows
