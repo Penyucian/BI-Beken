@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { 
+const {
     trendMasukRumahSakit,
     kunjungan,
     ketersediaanBedNonCovid,
@@ -15,7 +15,7 @@ const {
     stockObat,
     kunjunganDanPengunjung,
     barberJohnson,
-    } = require("../controller/pelayanan");
+} = require("../controller/pelayanan");
 
 // initializing Middleware
 const { checkAuthorization } = require('../middleware');

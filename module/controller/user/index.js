@@ -6,17 +6,34 @@ const JWT_KEY = process.env.JWT_KEY
 
 const getUser = async (req, res, next) => {
 
-    const username = req.body.username
+    const auth = req.headers.authorization
+    const token = auth.split(' ')[1]
 
     try {
-        const [rows] = await db.query(`select * from users where username = ?`, username)
-        res.json({
-            "success": true,
-            "data": rows
-        })
+        if (token) {
+            try {
+                const payload = await JWT.verify(token, JWT_KEY)
+                if (payload) {
+                    const username = payload.user_uname
+                    const [rows] = await db.query(`select username,name from users where username = ?`, username)
+                    res.json({
+                        "success": true,
+                        "data": rows[0]
+                    })
+                } else {
+                    res.status(403)
+                    const error = new Error("Wrong Token")
+                    next(error)
+                }
+            } catch (error) {
+                res.status(500)
+                next(error)
+            }
+        }
     } catch (error) {
         next(error)
     }
+
 }
 
 const loginUser = async (req, res, next) => {
@@ -28,12 +45,12 @@ const loginUser = async (req, res, next) => {
     if (rows.length != 0) {
         const user = rows[0]
         const password = req.body.password
-        
+
         if (md5(password) == user.pwd) {
             const payload = {
                 "user_id": user.id,
                 "user_uname": user.username,
-                "user_name" : user.name
+                "user_name": user.name
             }
             const token = await JWT.sign(payload, JWT_KEY)
 
@@ -43,29 +60,24 @@ const loginUser = async (req, res, next) => {
                     "data": `Prime ${token}`,
                     "group": user.group_id
                 })
-            } else{
+            } else {
                 res.json({
                     "code": 500,
                     "message": "JWT Error, cant create token"
                 })
-                /*const error = new Error("JWT Error, cant create token")
-                next(error)*/
             }
+
         } else {
             res.json({
                 "code": 403,
                 "message": "Password salah"
             })
-            /*const error = new Error("Wrong Password");
-            next(error)*/
         }
     } else {
         res.json({
             "code": 404,
             "message": "Username tidak ditemukan"
         })
-        /*const error = new Error("Username not registered");
-        next(error)*/
     }
 }
 

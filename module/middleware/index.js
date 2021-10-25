@@ -9,7 +9,6 @@ const checkAuthorization = async (req, res, next) => {
         if (token) {
             try {
                 const payload = await JWT.verify(token, JWT_KEY)
-
                 if (payload) {
                     req.user = payload
                     next()

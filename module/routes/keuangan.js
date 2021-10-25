@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { 
+const {
     trendPendapatan,
     pendapatan,
     pendapatanCaraBayar,
@@ -9,7 +9,7 @@ const {
     pendapatanPerRanap,
     pendapatanPerCaraBayar,
     klaimStatus
-    } = require("../controller/keuangan");
+} = require("../controller/keuangan");
 
 // initializing Middleware
 const { checkAuthorization } = require('../middleware');

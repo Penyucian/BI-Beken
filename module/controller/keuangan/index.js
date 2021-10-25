@@ -3,7 +3,7 @@ const db = require("../../../tools/database");
 const now = new Date().getDate()
 
 let arrayContainData
-let arrayContainData2 
+let arrayContainData2
 let where_1
 let where_2
 let limit
@@ -55,7 +55,7 @@ const trendPendapatan = async (req, res, next) => {
             MONTH(k.date)
         ORDER BY
             bulan ASC
-        `,arrayContainData)
+        `, arrayContainData)
 
         res.json({
             "success": true,
@@ -109,7 +109,7 @@ const klaimStatus = async (req, res, next) => {
             MONTH(rks.date)
         ORDER BY
             bulan ASC
-        `,arrayContainData)
+        `, arrayContainData)
 
         res.json({
             "success": true,
@@ -131,9 +131,9 @@ const pendapatanCaraBayar = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
     try {
-        
+
         if (timeDiff > 0) {
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             where_2 = 'DATE(vi.entry_date) BETWEEN ? AND ?'
@@ -183,7 +183,7 @@ const pendapatanCaraBayar = async (req, res, next) => {
             v.name1 = vi.name2
 	    GROUP BY v.name1
 	    ORDER BY final desc
-        `,arrayContainData)
+        `, arrayContainData)
 
         res.json({
             "success": true,
@@ -249,7 +249,7 @@ const pendapatan = async (req, res, next) => {
                 k.payment_type_id
             ORDER BY
                 total DESC
-            `,arrayContainData)
+            `, arrayContainData)
 
         const [targetTahun] = await db.query(`
             SELECT 
@@ -260,25 +260,23 @@ const pendapatan = async (req, res, next) => {
                 ${where_2}
         `, arrayContainData2)
 
-        const total = rows.map(item => 
+        const total = rows.map(item =>
             parseInt(item.total)
-            ).reduce((prev, next) => 
-                prev + next); 
-        const totalavg = Math.ceil(total/totalDate)
+        ).reduce((prev, next) =>
+            prev + next);
+        const totalavg = Math.ceil(total / totalDate)
 
         const target = targetTahun[0].total
 
-        const persen = (x,y) => {
-            return ((x/y)*100)
+        const persen = (x, y) => {
+            return ((x / y) * 100)
         }
 
-        console.log(persen(total,target));
-
-        if (persen(total,target) < 50) {
+        if (persen(total, target) < 50) {
             safetyTarget = "Keuangan Rumah Sakit Sedang Tidak Aman"
-        } else if (50 <= persen(total,target) && persen(total,target) < 100) {
+        } else if (50 <= persen(total, target) && persen(total, target) < 100) {
             safetyTarget = "Keuangan Rumah Sakit Sedang Kurang Aman"
-        } else if(persen(total,target) >= 100){
+        } else if (persen(total, target) >= 100) {
             safetyTarget = "Keuangan Rumah Sakit Aman"
         }
 
@@ -290,7 +288,7 @@ const pendapatan = async (req, res, next) => {
             "kondisi": safetyTarget
         })
 
-    } catch (error)    {
+    } catch (error) {
         next(error)
     }
 }
@@ -336,7 +334,7 @@ const pendapatanPerUnit = async (req, res, next) => {
             totalDate = dateLastDate
 
         }
-        
+
         const [rows] = await db.query(`
         SELECT
             rc.id,
@@ -412,7 +410,7 @@ const pendapatanPerPenunjang = async (req, res, next) => {
             totalDate = dateLastDate
 
         }
-        
+
         const [rows] = await db.query(`
         SELECT
             rkbg.id,
@@ -486,7 +484,7 @@ const pendapatanPerRanap = async (req, res, next) => {
             totalDate = dateLastDate
 
         }
-        
+
         const [rows] = await db.query(`
         SELECT
             ric.id,
@@ -627,7 +625,7 @@ const pendapatanPerCaraBayar = async (req, res, next) => {
             totalDate = dateLastDate
 
         }
-        
+
         const [rows] = await db.query(`
         SELECT
             k.payment_type_id as id,

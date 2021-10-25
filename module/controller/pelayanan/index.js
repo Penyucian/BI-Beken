@@ -104,9 +104,9 @@ const kunjungan = async (req, res, next) => {
 
         } else if (timeDiff === 0) {
 
-                where_1 = 'DATE(v.date) = ?'
-                arrayContainData = [dateLast]
-                totalDate = dateLastDate
+            where_1 = 'DATE(v.date) = ?'
+            arrayContainData = [dateLast]
+            totalDate = dateLastDate
 
         } else {
 
@@ -153,7 +153,7 @@ const kunjunganDanPengunjung = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
     try {
 
         if (timeDiff > 0) {
@@ -165,7 +165,7 @@ const kunjunganDanPengunjung = async (req, res, next) => {
 
             where_1 = 'DATE(v.date) = ?'
             arrayContainData = [dateLast]
-            
+
         } else {
 
             where_1 = 'MONTH(v.date) = ?'
@@ -245,7 +245,7 @@ const sepuluhBesarRajal = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -260,11 +260,11 @@ const sepuluhBesarRajal = async (req, res, next) => {
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
-             
+        } else if (timeDiff === 0) {
+
             where_1 = 'DATE(v.date) = ?'
             arrayContainData = [dateLast]
-            
+
         } else {
 
             where_1 = 'MONTH(v.date) = ?'
@@ -308,7 +308,7 @@ const sepuluhBesarRanap = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -323,11 +323,11 @@ const sepuluhBesarRanap = async (req, res, next) => {
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
-        
+        } else if (timeDiff === 0) {
+
             where_1 = 'DATE(v.date) = ?'
             arrayContainData = [dateLast]
-            
+
         } else {
             where_1 = 'MONTH(v.date) = ?'
             arrayContainData = [dateLastMonth]
@@ -372,7 +372,7 @@ const kunjunganRJ = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -387,11 +387,11 @@ const kunjunganRJ = async (req, res, next) => {
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
+        } else if (timeDiff === 0) {
 
             where_1 = 'DATE(v.date) = ?'
             arrayContainData = [dateLast]
-        
+
         } else {
             where_1 = 'MONTH(v.date) = ?'
             arrayContainData = [dateLastMonth]
@@ -433,7 +433,7 @@ const kunjunganRI = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -448,7 +448,7 @@ const kunjunganRI = async (req, res, next) => {
             where_1 = 'DATE(vic.entry_date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
+        } else if (timeDiff === 0) {
 
             where_1 = 'DATE(vic.entry_date) = ?'
             arrayContainData = [dateLast]
@@ -498,7 +498,7 @@ const kunjunganCaraBayar = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -513,7 +513,7 @@ const kunjunganCaraBayar = async (req, res, next) => {
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
+        } else if (timeDiff === 0) {
 
             where_1 = 'DATE(v.date) = ?'
             arrayContainData = [dateLast]
@@ -562,7 +562,7 @@ const kunjunganKecamatan = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -577,7 +577,7 @@ const kunjunganKecamatan = async (req, res, next) => {
             where_1 = 'DATE(v.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
+        } else if (timeDiff === 0) {
 
             where_1 = 'DATE(v.date) = ?'
             arrayContainData = [dateLast]
@@ -625,7 +625,7 @@ const penggunaanObatTertinggi = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -640,7 +640,7 @@ const penggunaanObatTertinggi = async (req, res, next) => {
             where_1 = 'DATE(pr.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
+        } else if (timeDiff === 0) {
 
             where_1 = 'DATE(pr.date) = ?'
             arrayContainData = [dateLast]
@@ -695,7 +695,7 @@ const stockObat = async (req, res, next) => {
     const finalYearFirst = (new Date(dateFirst))
     const finalYearLast = (new Date(dateLast))
     const timeDiff = ((finalYearLast.getTime() - finalYearFirst.getTime()) / (1000 * 60 * 60 * 24))
-    
+
 
     try {
 
@@ -710,7 +710,7 @@ const stockObat = async (req, res, next) => {
             where_1 = 'DATE(dt.date) BETWEEN ? AND ?'
             arrayContainData = [dateFirst, dateLast]
 
-        } else if (timeDiff === 0 ) {
+        } else if (timeDiff === 0) {
 
             where_1 = 'DATE(dt.date) <= ?'
             arrayContainData = [dateLast]
@@ -744,9 +744,8 @@ const stockObat = async (req, res, next) => {
             ORDER BY
                 jumlah desc
             ${limit}
-            `,arrayContainData)
+            `, arrayContainData)
 
-            console.log(rows);
         res.json({
             "success": true,
             "result": rows
@@ -781,10 +780,17 @@ const stateCovid = async (req, res, next) => {
                 vi.covid19_status
             `, [dateLastMonth])
 
-        res.json({
-            "success": true,
-            "data": stateCovid
-        })
+        if (stateCovid.length == 0) {
+            res.json({
+                "success": true,
+                "data": 0
+            })
+        } else {
+            res.json({
+                "success": true,
+                "data": stateCovid
+            })
+        }
 
     } catch (error) {
         next(error)
@@ -929,7 +935,7 @@ const barberJohnson = async (req, res, next) => {
                 AND vic.inpatient_clinic_tujuan_id IS NULL
                 `, [`
                     ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
+        `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
         const [keluarDipindahkan] = await db.query(`
@@ -942,7 +948,7 @@ const barberJohnson = async (req, res, next) => {
                 DATE(vic.exit_date) BETWEEN ? AND ?
                 `, [`
                     ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
+        `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
         const [pasienKeluarMatiKurangDari] = await db.query(`
@@ -957,7 +963,7 @@ const barberJohnson = async (req, res, next) => {
                 AND vi.inpatient_exit_condition_id IN (4)
                 `, [`
                     ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
+        `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
         const [pasienKeluarMatiLebihDari] = await db.query(`
@@ -972,7 +978,7 @@ const barberJohnson = async (req, res, next) => {
                 AND vi.inpatient_exit_condition_id IN (5)
                 `, [`
                     ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
+        `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
         const [lamaDirawat] = await db.query(`
@@ -985,7 +991,7 @@ const barberJohnson = async (req, res, next) => {
                 DATE(vic.exit_date) BETWEEN ? AND ?
                 `, [`
                     ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
+        `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
         const [jumlahTT] = await db.query(`
@@ -999,7 +1005,7 @@ const barberJohnson = async (req, res, next) => {
                 AND active='1'
             `, [`
                 ${dateLastYear}-${dateLastMonth}-01`,
-            `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
+        `${dateLastYear}-${dateLastMonth}-${dateLastDate}`
         ])
 
         let z = 0
@@ -1021,8 +1027,8 @@ const barberJohnson = async (req, res, next) => {
                 )
             `, [`
                 ${dateLastYear}-${dateLastMonth}-${x}`,
-                `${dateLastYear}-${dateLastMonth}-${x}`,
-                `${dateLastYear}-${dateLastMonth}-${x}`
+            `${dateLastYear}-${dateLastMonth}-${x}`,
+            `${dateLastYear}-${dateLastMonth}-${x}`
             ])
             z += hariPerawatan[0].hari_perawatan
         }
